@@ -56,7 +56,7 @@ for i in "${!directories[@]}"; do
     # Assign variables
     dir="${directories[$i]}"
     port=${ports[$i]}
-    service_name="php-server-website$i.service"
+    service_name=".php-server-website$i.service"
     service_file="$service_dir/$service_name"
 
     # Make sure directory exists
