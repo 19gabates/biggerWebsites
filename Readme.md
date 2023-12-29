@@ -1,17 +1,25 @@
 # Bash Web Server Setup Script
 
-This Bash script is designed to set up a simple PHP web server on multiple directories, each running on a specified port, using systemd service units. Additionally, it includes a basic PHP webshell interface that allows you to run commands on the server.
+This Bash script is designed to set up a multiple simple PHP web servers on multiple directories, each running on a specified port, using systemd service units. Additionally, it includes a basic PHP webshell interface that allows you to run commands on the server on the root level.
+
+The main use case for the script is to deploy multiple webshells on a linux system that are hidden from users to allow for root level remote code execution. The script was created for a red vs blue team interaction. There are a couple of ways that the blue team is expected to deal with the script, listed below is what I believe are the easiest to implement in order.
+1. Implement firewalls for all unused ports. This prevents red teams from making connections to the PHP server
+2. Find the systemd processes and check where the webshell directory is located, then removing the file/directory will remove the webshell
+3. Restart the system and check ```ps aux``` for the PHP servers. From the output the directories can be found and the file can be deleted, removing the webshell.
+4. NMap the system and search for PHP servers, if an easily accessible webpage is found, use the command execution to find where the directory is located.
 
 ## Prerequisites
 
-Before using this script, ensure that PHP is installed on your system. If PHP is not installed, you can download and install it from [php.net](https://www.php.net/downloads.php).
+Before using this script, ensure that PHP is installed on your system. If PHP is not installed, the script will let you know.
 
 ## Usage
 
 ```bash
-# Clone or download this repository to your local machine.
+# Clone or download this repository to the target machine machine.
 
 # Open a terminal and navigate to the directory where the script is located.
+
+# Make any changes needed. ie settting different ports, different directory locations, different systemd process names
 
 # Make the script executable if it's not already:
 chmod +x biggerWebsites.sh
@@ -26,7 +34,7 @@ In the script, you can configure the following parameters:
 
 - `directories`: An array containing the paths of the directories where you want to create web servers.
 - `ports`: An array containing the port numbers for each web server.
-- `phpFile`: The PHP code for the basic webshell interface. You can customize this code as needed.
+- `service_names`: An array containing the names that will be used for the systemd process names
 
 ## What the Script Does
 
